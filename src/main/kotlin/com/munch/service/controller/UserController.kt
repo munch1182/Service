@@ -29,29 +29,25 @@ class UserController {
             return ResAuthErrorBean("this user had bean baned")
         }
 
-        return ResSuccessBean(ResUerBean.change2Res(user))
+        return ResSuccessBean(ResUerBean.change2Res(user, JwtHelper.compactToken(user.userId, req.save)))
     }
 
 
     @RequestMapping("/user/getuser", method = [(RequestMethod.POST)])
     @ResponseBody
     fun getUserByToken(@RequestHeader(name = TokenInterceptor.KEY_TOKEN) token: String): BaseResBean<ResUerBean> {
-        return checkResFromJets(JwtHelper.User.getUserId(token), { userid ->
-            val user = dao.findById(userid)
-            if (user.isPresent) {
-                ResSuccessBean(ResUerBean.change2Res(user.get()))
-            } else {
-                ResNotFoundDataBean<ResUerBean>("user")
-            }
-        })
+        val user = dao.findById(JwtHelper.User.getUserId(token))
+        return if (user.isPresent) {
+            ResSuccessBean(ResUerBean.change2Res(user.get(), token))
+        } else {
+            ResNotFoundDataBean("user")
+        }
     }
 
     @RequestMapping("/user/refreshtoken", method = [(RequestMethod.POST)])
     @ResponseBody
     fun refreshToken(@RequestHeader(name = TokenInterceptor.KEY_TOKEN) token: String): BaseResBean<ResTokenBean> {
-        return checkResFromJets(JwtHelper.User.refreshToken(token), { newToken ->
-            ResSuccessBean(ResTokenBean(newToken))
-        })
+        return ResSuccessBean(ResTokenBean(JwtHelper.User.refreshToken(token)))
     }
 
     private fun <T, U> checkResFromJets(res: ResHelper<T>, func: (T) -> BaseResBean<U>): BaseResBean<U> {

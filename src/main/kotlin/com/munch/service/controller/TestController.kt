@@ -16,6 +16,12 @@ class TestController {
         return "此时，已过去了约$dis。"
     }
 
+    @RequestMapping("/user/test")
+    fun test2(): String {
+        val dis = distance()
+        return "此时，已过去了约$dis。"
+    }
+
     private fun distance(): String {
         val dis = System.currentTimeMillis() - START
         val minutes = dis / 1000 / 60

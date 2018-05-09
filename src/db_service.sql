@@ -4,14 +4,14 @@
  Source Server         : service
  Source Server Type    : MySQL
  Source Server Version : 50721
- Source Host           : 
+ Source Host           : 118.24.40.249:3306
  Source Schema         : db_service
 
  Target Server Type    : MySQL
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 10/05/2018 05:57:25
+ Date: 10/05/2018 06:04:36
 */
 
 SET NAMES utf8mb4;

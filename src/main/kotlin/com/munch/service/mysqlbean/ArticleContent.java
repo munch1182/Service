@@ -1,8 +1,6 @@
 package com.munch.service.mysqlbean;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
@@ -10,11 +8,17 @@ import java.sql.Timestamp;
 public class ArticleContent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long artId;
     private String content;
     private Timestamp modifytime;
 
+    public ArticleContent() {
+    }
+
+    public ArticleContent(long artId, String content) {
+        this.artId = artId;
+        this.content = content;
+    }
 
     public long getArtId() {
         return artId;

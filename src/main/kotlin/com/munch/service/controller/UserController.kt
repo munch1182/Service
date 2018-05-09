@@ -28,7 +28,7 @@ class UserController {
         if (user.isBanned) {
             return ResAuthErrorBean("this user had bean baned")
         }
-
+        user.logincount++
         return ResSuccessBean(ResUerBean.change2Res(user, JwtHelper.compactToken(user.userId, req.save)))
     }
 

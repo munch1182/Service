@@ -12,13 +12,13 @@ open class BaseResBean<out T>(val status: Long, val msg: String, val data: T?)
 
 /** ---------------- SUCCESS ---------------- */
 
-class ResSuccessBean<out T>(data: T? = null, msg: String = "isSuccess") : BaseResBean<T>(Status.SUCCESS, msg, data)
+class ResSuccessBean<out T>(data: T? = null, msg: String = "success") : BaseResBean<T>(Status.SUCCESS, msg, data)
 
 /** ---------------- NOT FOUND ---------------- */
 
 class ResNotFoundBean<out T>(msg: String = "cannot find data", data: T? = null) : BaseResBean<T>(Status.NOT_FOUND, msg, data)
 
-class ResNotFoundDataBean<out T>(type: String, data: T? = null) : BaseResBean<T>(Status.NOT_FOUND, "not find the $type", data)
+class ResNotFoundDataBean<out T>(type: String, data: T? = null) : BaseResBean<T>(Status.NOT_FOUND, "not find this $type", data)
 
 /** ---------------- AUTH ERROR ---------------- */
 

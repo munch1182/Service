@@ -16,21 +16,24 @@ class TestController {
         return "此时，已过去了约$dis。"
     }
 
-    fun distance(): String {
+    private fun distance(): String {
         val dis = System.currentTimeMillis() - START
         val minutes = dis / 1000 / 60
-        val hour = minutes / 60
-        if (hour <= 0) {
-            return minutes.toString().plus("分钟")
+        return if (minutes < 60) {
+            minutes.toString().plus("分钟")
+        } else {
+            val hours = minutes / 60
+            if (hours < 24) {
+                hours.toString().plus("小时")
+            } else {
+                val days = hours / 24
+                if (days < 365) {
+                    days.toString().plus("天")
+                } else {
+                    val year = days / 365
+                    year.toString().plus("年")
+                }
+            }
         }
-        val day = hour / 24
-        if (day <= 0) {
-            return day.toString().plus("小时")
-        }
-        val year = day / 365
-        if (year <= 0) {
-            return day.toString().plus("天")
-        }
-        return year.toString().plus("年")
     }
 }

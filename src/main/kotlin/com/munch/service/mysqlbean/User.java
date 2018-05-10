@@ -13,6 +13,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
     private String name;
+    private String loginname;
     private String pwd;
     private long auth;
     private Timestamp regtime;
@@ -79,4 +80,11 @@ public class User {
         return auth == 1;
     }
 
+    public String getLoginname() {
+        return loginname;
+    }
+
+    public void setLoginname(String loginname) {
+        this.loginname = loginname;
+    }
 }

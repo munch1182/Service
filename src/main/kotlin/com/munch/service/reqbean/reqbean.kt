@@ -3,7 +3,7 @@ package com.munch.service.reqbean
 import com.munch.service.mysqlbean.ArticleContent
 import com.munch.service.mysqlbean.ArticleTitle
 
-data class ReqUserBean(val name: String, val pwd: String?, val save: Boolean)
+data class ReqUserBean(val loginname: String, val pwd: String?, val save: Boolean)
 
 data class ReqTokenBean(val token: String)
 
@@ -13,7 +13,7 @@ data class ReqNewArticleBean(val title: String, val content: String) {
 
     companion object {
 
-        fun change2TitlemBean(userId: Long, req: ReqNewArticleBean): ArticleTitle {
+        fun change2TitleBean(userId: Long, req: ReqNewArticleBean): ArticleTitle {
             return ArticleTitle(req.title, userId)
         }
 
@@ -27,7 +27,7 @@ data class ReqModifyArticleBean(val artId: Long, val title: String, val content:
 
     companion object {
 
-        fun change2TitlemBean(article: ArticleTitle, req: ReqModifyArticleBean): ArticleTitle {
+        fun change2TitleBean(article: ArticleTitle, req: ReqModifyArticleBean): ArticleTitle {
             if (article.title != req.title) {
                 article.title = req.title
             }

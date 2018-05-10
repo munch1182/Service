@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserDao : JpaRepository<User, Long> {
 
-    fun findUserByName(name: String): User?
+    fun findUserByLoginname(loginname: String): User?
 }

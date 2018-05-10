@@ -23,12 +23,15 @@ class UserController {
     @ResponseBody
     fun loginByName(@RequestBody req: ReqUserBean): BaseResBean<ResUerBean> {
 
-        val user = dao.findUserByName(req.name) ?: return ResNotFoundDataBean("user")
+        val user = dao.findUserByLoginname(req.loginname) ?: return ResNotFoundDataBean("user")
 
         if (user.isBanned) {
             return ResAuthErrorBean("this user had bean baned")
         }
         user.logincount++
+
+        dao.saveAndFlush(user)
+
         return ResSuccessBean(ResUerBean.change2Res(user, JwtHelper.compactToken(user.userId, req.save)))
     }
 

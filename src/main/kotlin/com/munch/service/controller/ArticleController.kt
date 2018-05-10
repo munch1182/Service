@@ -5,6 +5,7 @@ import com.munch.service.base.ResNotFoundDataBean
 import com.munch.service.base.ResSuccessBean
 import com.munch.service.base.ResUnknownBean
 import com.munch.service.dao.ArticleContentDao
+import com.munch.service.dao.ArticleDao
 import com.munch.service.dao.ArticleTitleDao
 import com.munch.service.dao.UserDao
 import com.munch.service.help.JwtHelper
@@ -31,6 +32,8 @@ class ArticleController {
     lateinit var contentDao: ArticleContentDao
     @Resource
     lateinit var userDao: UserDao
+    @Resource
+    lateinit var articleDao: ArticleDao
 
     @RequestMapping("/user/boxs", method = [(RequestMethod.POST)])
     @ResponseBody
@@ -45,16 +48,8 @@ class ArticleController {
     @RequestMapping("/user/content", method = [(RequestMethod.POST)])
     @ResponseBody
     fun getContent(@RequestBody req: ReqArticleByIdBean): BaseResBean<ResArticleBean> {
-        val titleOp = titleDao.findById(req.artId)
-        if (!titleOp.isPresent) {
-            return ResNotFoundDataBean("article")
-        }
-        val contentOp = contentDao.findById(req.artId)
-        if (!contentOp.isPresent) {
-            return ResNotFoundDataBean("article")
-        }
-        val username = userDao.findById(titleOp.get().userId).get().name
-        return ResSuccessBean(ResArticleBean.change2Res(username, titleOp.get(), contentOp.get()))
+        val article = articleDao.getContent(req.artId) ?: return ResNotFoundDataBean("article")
+        return ResSuccessBean(article)
     }
 
     @RequestMapping("/user/newarticle")
@@ -64,7 +59,7 @@ class ArticleController {
         if (!userOp.isPresent) {
             return ResUnknownBean("request with error userid")
         }
-        val title = titleDao.saveAndFlush(ReqNewArticleBean.change2TitlemBean(userOp.get().userId, req))
+        val title = titleDao.saveAndFlush(ReqNewArticleBean.change2TitleBean(userOp.get().userId, req))
         contentDao.saveAndFlush(ReqNewArticleBean.change2ContentBean(title.artId, req))
         return getContent(ReqArticleByIdBean(title.artId))
     }
@@ -76,7 +71,7 @@ class ArticleController {
         if (!articleOp.isPresent) {
             return ResUnknownBean("request with error artid")
         }
-        titleDao.saveAndFlush(ReqModifyArticleBean.change2TitlemBean(articleOp.get(), req))
+        titleDao.saveAndFlush(ReqModifyArticleBean.change2TitleBean(articleOp.get(), req))
         val contentOp = contentDao.findById(req.artId)
         val content: ArticleContent
         if (!contentOp.isPresent) {

@@ -3,7 +3,7 @@ package com.munch.service.reqbean
 import com.munch.service.mysqlbean.ArticleContent
 import com.munch.service.mysqlbean.ArticleTitle
 
-data class ReqUserBean(val loginname: String, val pwd: String?, val save: Boolean)
+data class ReqUserBean(val loginName: String, val pwd: String?, val save: Boolean)
 
 data class ReqTokenBean(val token: String)
 

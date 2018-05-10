@@ -10,6 +10,11 @@ import com.munch.service.interceptor.TokenInterceptor
 import com.munch.service.reqbean.ReqUserBean
 import com.munch.service.resbean.ResTokenBean
 import com.munch.service.resbean.ResUerBean
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiImplicitParam
+import io.swagger.annotations.ApiImplicitParams
+import io.swagger.annotations.ApiOperation
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 import javax.annotation.Resource
 
@@ -23,7 +28,7 @@ class UserController {
     @ResponseBody
     fun loginByName(@RequestBody req: ReqUserBean): BaseResBean<ResUerBean> {
 
-        val user = dao.findUserByLoginname(req.loginname) ?: return ResNotFoundDataBean("user")
+        val user = dao.findUserByLoginname(req.loginName) ?: return ResNotFoundDataBean("user")
 
         if (user.isBanned) {
             return ResAuthErrorBean("this user had bean baned")

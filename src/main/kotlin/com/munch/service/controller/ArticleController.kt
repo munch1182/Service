@@ -52,7 +52,7 @@ class ArticleController {
         return ResSuccessBean(article)
     }
 
-    @RequestMapping("/user/newarticle")
+    @RequestMapping("/user/newarticle", method = [(RequestMethod.POST)])
     @ResponseBody
     fun newArticle(@RequestHeader(name = TokenInterceptor.KEY_TOKEN) token: String, @RequestBody req: ReqNewArticleBean): BaseResBean<ResArticleBean> {
         val userOp = userDao.findById(JwtHelper.User.getUserId(token))
@@ -64,7 +64,7 @@ class ArticleController {
         return getContent(ReqArticleByIdBean(title.artId))
     }
 
-    @RequestMapping("/user/modifyarticle")
+    @RequestMapping("/user/modifyarticle", method = [(RequestMethod.POST)])
     @ResponseBody
     fun modifyArticle(@RequestBody req: ReqModifyArticleBean): BaseResBean<ResArticleBean> {
         val articleOp = titleDao.findById(req.artId)
@@ -85,7 +85,7 @@ class ArticleController {
         return getContent(ReqArticleByIdBean(req.artId))
     }
 
-    @RequestMapping("/user/deletearticle")
+    @RequestMapping("/user/deletearticle", method = [(RequestMethod.POST)])
     @ResponseBody
     fun deleteArticle(@RequestHeader(name = TokenInterceptor.KEY_TOKEN) token: String, @RequestBody req: ReqArticleByIdBean): BaseResBean<Int> {
         val userOp = userDao.findById(JwtHelper.User.getUserId(token))
@@ -103,12 +103,12 @@ class ArticleController {
         return ResSuccessBean()
     }
 
-    @RequestMapping("/boxs")
+    @RequestMapping("/boxs",method = [(RequestMethod.GET)])
     fun getBoxs(): BaseResBean<ResArticleBean> {
         return getContent(ReqArticleByIdBean(BOXS_ID))
     }
 
-    @RequestMapping("/{artid}/content")
+    @RequestMapping("/{artid}/content",method = [(RequestMethod.GET)])
     fun getContentByGet(@PathVariable(name = "artid") artid: Long): String {
         return getContent(ReqArticleByIdBean(artid)).data?.content ?: "empty"
     }

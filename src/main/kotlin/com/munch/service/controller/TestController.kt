@@ -1,6 +1,7 @@
 package com.munch.service.controller
 
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -10,13 +11,13 @@ class TestController {
         private const val START = 1525876423748
     }
 
-    @RequestMapping("/test")
+    @RequestMapping("/test",method = [(RequestMethod.GET)])
     fun test(): String {
         val dis = distance()
         return "此时，已过去了约$dis。"
     }
 
-    @RequestMapping("/user/test")
+    @RequestMapping("/user/test",method = [(RequestMethod.GET)])
     fun test2(): String {
         val dis = distance()
         return "此时，已过去了约$dis。"

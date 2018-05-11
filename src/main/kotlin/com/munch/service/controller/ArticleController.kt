@@ -4,10 +4,7 @@ import com.munch.service.base.BaseResBean
 import com.munch.service.base.ResNotFoundDataBean
 import com.munch.service.base.ResSuccessBean
 import com.munch.service.base.ResUnknownBean
-import com.munch.service.dao.ArticleContentDao
-import com.munch.service.dao.ArticleDao
-import com.munch.service.dao.ArticleTitleDao
-import com.munch.service.dao.UserDao
+import com.munch.service.dao.*
 import com.munch.service.help.JwtHelper
 import com.munch.service.interceptor.TokenInterceptor
 import com.munch.service.mysqlbean.ArticleContent
@@ -16,8 +13,11 @@ import com.munch.service.reqbean.ReqArticleByIdBean
 import com.munch.service.reqbean.ReqModifyArticleBean
 import com.munch.service.reqbean.ReqNewArticleBean
 import com.munch.service.resbean.ResArticleBean
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import javax.annotation.Resource
+import javax.persistence.EntityManager
+
 
 @RestController
 class ArticleController {
@@ -32,8 +32,9 @@ class ArticleController {
     lateinit var contentDao: ArticleContentDao
     @Resource
     lateinit var userDao: UserDao
-    @Resource
-    lateinit var articleDao: ArticleDao
+    @Autowired
+    lateinit var entityManager: EntityManager
+
 
     @RequestMapping("/user/boxs", method = [(RequestMethod.POST)])
     @ResponseBody
@@ -48,7 +49,7 @@ class ArticleController {
     @RequestMapping("/user/content", method = [(RequestMethod.POST)])
     @ResponseBody
     fun getContent(@RequestBody req: ReqArticleByIdBean): BaseResBean<ResArticleBean> {
-        val article = articleDao.getContent(req.artId) ?: return ResNotFoundDataBean("article")
+        val article = Article.getArticle(entityManager, req.artId) ?: return ResNotFoundDataBean("article")
         return ResSuccessBean(article)
     }
 
@@ -103,12 +104,12 @@ class ArticleController {
         return ResSuccessBean()
     }
 
-    @RequestMapping("/boxs",method = [(RequestMethod.GET)])
+    @RequestMapping("/boxs", method = [(RequestMethod.GET)])
     fun getBoxs(): BaseResBean<ResArticleBean> {
         return getContent(ReqArticleByIdBean(BOXS_ID))
     }
 
-    @RequestMapping("/{artid}/content",method = [(RequestMethod.GET)])
+    @RequestMapping("/{artid}/content", method = [(RequestMethod.GET)])
     fun getContentByGet(@PathVariable(name = "artid") artid: Long): String {
         return getContent(ReqArticleByIdBean(artid)).data?.content ?: "empty"
     }

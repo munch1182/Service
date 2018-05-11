@@ -1,8 +1,11 @@
 package com.munch.service.controller
 
+import com.munch.service.help.IPHelper
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 class TestController {
@@ -11,13 +14,19 @@ class TestController {
         private const val START = 1525876423748
     }
 
-    @RequestMapping("/test",method = [(RequestMethod.GET)])
-    fun test(): String {
+    @RequestMapping("/test", method = [(RequestMethod.GET)])
+    fun test(res: HttpServletResponse, req: HttpServletRequest): String {
         val dis = distance()
+        res.addHeader("IP", IPHelper.getIp(req))
         return "此时，已过去了约$dis。"
     }
 
-    @RequestMapping("/user/test",method = [(RequestMethod.GET)])
+    @RequestMapping("/ip", method = [(RequestMethod.GET)])
+    fun ip(req: HttpServletRequest): String {
+        return IPHelper.getIp(req)
+    }
+
+    @RequestMapping("/user/test", method = [(RequestMethod.GET)])
     fun test2(): String {
         val dis = distance()
         return "此时，已过去了约$dis。"

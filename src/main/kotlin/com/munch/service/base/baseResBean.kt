@@ -3,7 +3,7 @@ package com.munch.service.base
 object Status {
     const val SUCCESS = 200L
     const val NOT_FOUND = 404L
-    const val AUTH_ERROR = 410L
+    const val AUTH_ERROR = 401L
     const val CON_NOT = 500L
     const val UNKNOWN = 999L
 }
